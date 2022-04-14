@@ -63,9 +63,12 @@ func setState(ctx *gin.Context) {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
+
 	if response.StatusCode == http.StatusOK {
 		ctx.IndentedJSON(http.StatusOK, gin.H{"Status": "Ok!"})
 	} else {
+		all, _ := io.ReadAll(response.Body)
+		log.Println("status:" + string(rune(response.StatusCode)) + ", body:" + string(all))
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 	}
 }
