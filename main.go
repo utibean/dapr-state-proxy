@@ -55,7 +55,19 @@ func getByKey(ctx *gin.Context) {
 }
 
 func setState(ctx *gin.Context) {
-
+	bodyBytes, _ := io.ReadAll(ctx.Request.Body)
+	log.Println("Receiving data : " + string(bodyBytes))
+	response, err := http.Post(daprUrl, "application/json", ctx.Request.Body)
+	if err != nil {
+		log.Println(err)
+		ctx.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	if response.StatusCode == http.StatusOK {
+		ctx.IndentedJSON(http.StatusOK, gin.H{"Status": "Ok!"})
+	} else {
+		ctx.AbortWithStatus(http.StatusInternalServerError)
+	}
 }
 
 func getEnvOrDefault(key, defValue string) string {
