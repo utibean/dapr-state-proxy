@@ -35,7 +35,7 @@ func main() {
 func getByKey(ctx *gin.Context) {
 	key := ctx.Param("key")
 	log.Println("Getting state for key " + key)
-	response, err := http.Get(daprPort + "/" + key)
+	response, err := http.Get(daprUrl + "/" + key)
 	if err != nil {
 		ctx.AbortWithStatus(http.StatusNotFound)
 		log.Println(err)
