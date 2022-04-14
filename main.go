@@ -38,16 +38,18 @@ func getByKey(ctx *gin.Context) {
 	response, err := http.Get(daprPort + "/" + key)
 	if err != nil {
 		ctx.AbortWithStatus(http.StatusNotFound)
+		log.Println(err)
 		return
 	}
 	valueBytes, err := io.ReadAll(response.Body)
 	if err != nil {
+		log.Println(err)
 		ctx.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
 	ctx.IndentedJSON(http.StatusOK, stateItem{
-		Key: key,
+		Key:   key,
 		Value: string(valueBytes),
 	})
 }
