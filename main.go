@@ -55,6 +55,8 @@ func getByKey(ctx *gin.Context) {
 }
 
 func setState(ctx *gin.Context) {
+	items := []stateItem{}
+	ctx.BindJSON(items)
 	bodyBytes, _ := io.ReadAll(ctx.Request.Body)
 	log.Println("Receiving data : " + string(bodyBytes))
 	response, err := http.Post(daprUrl, "application/json", ctx.Request.Body)
